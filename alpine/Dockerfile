@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine3.9
+FROM node:14.2.0-alpine3.11 as api-compiler
 
 LABEL maintainer="Carlos Remuzzi carlosremuzzi@gmail.com"
 
