@@ -47,7 +47,7 @@ RUN apk add --no-cache \
         opensc \
         pcsc-lite \
         ttf-dejavu \
-    && sed -i 's~jre\/bin\/java~/usr/bin/java~g' application.properties
+    && sed -i 's~jre\/bin\/java~/usr/bin/java~g' fido.properties
 
 ENTRYPOINT ["entrypoint"]
 
