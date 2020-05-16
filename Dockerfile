@@ -32,8 +32,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && cp /jacobitus/source/FidoMonitor/perfiles_certificado.json perfiles_certificado.json \
     && cp /jacobitus/source/FidoMonitor/target/monitor.jar monitor.jar \
     && cp -r /jacobitus/source/Fido/apidoc/ apidoc/
-    #&& sed -i 's/localhost/0.0.0.0/g' source/Fido/src/main/java/gob/bo/agetic/demofi/servidor/ServidorHttp.java \
-    #&& sed -i 's~usr\/lib\/x86_64-linux-gnu\/opensc-pkcs11.so~usr/lib/opensc-pkcs11.so~g' /usr/fido/application.properties \
 
 FROM openjdk:8-jre-alpine3.9
 
@@ -42,13 +40,14 @@ LABEL maintainer="Carlos Remuzzi carlosremuzzi@gmail.com"
 COPY entrypoint.sh /usr/local/bin/entrypoint
 COPY --from=builder /usr/Fido-build /usr/lib/fido
 
+WORKDIR /usr/lib/fido
+
 RUN apk add --no-cache \
         ccid \
         opensc \
         pcsc-lite \
-        ttf-dejavu
-
-WORKDIR /usr/lib/fido
+        ttf-dejavu \
+    && sed -i 's~jre\/bin\/java~/usr/bin/java~g' application.properties
 
 ENTRYPOINT ["entrypoint"]
 
