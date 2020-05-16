@@ -34,9 +34,6 @@ RUN apk add --no-cache --virtual .build-deps \
     && cp -r /jacobitus/source/Fido/apidoc/ apidoc/
     #&& sed -i 's/localhost/0.0.0.0/g' source/Fido/src/main/java/gob/bo/agetic/demofi/servidor/ServidorHttp.java \
     #&& sed -i 's~usr\/lib\/x86_64-linux-gnu\/opensc-pkcs11.so~usr/lib/opensc-pkcs11.so~g' /usr/fido/application.properties \
-    #&& cp source/Fido/adsib.pem /usr/fido/adsib.pem \
-    #&& cp source/Fido/att.pem /usr/fido/att.pem \
-    #&& cp source/Fido/firmadigital_bo.crl.base /usr/fido/firmadigital_bo.crl \
 
 FROM openjdk:8-jre-alpine3.9
 
