@@ -16,6 +16,8 @@ COPY --from=api-compiler /jacobitus /jacobitus
 
 RUN apk add --no-cache --virtual .build-deps \
         maven \
+    && sed -i 's~/usr/lib/ePass2003-Linux-x64/redist/libcastle.so.1.0.0~/usr/lib/pkcs11/opensc-pkcs11.so~g' /jacobitus/source/FidoMonitor/drivers.json \
+    && sed -i 's~/usr/lib/ePass2003-Linux-x64/redist/libcastle.so.1.0.0~/usr/lib/pkcs11/opensc-pkcs11.so~g' /jacobitus/instaladores/linux/files_agencia/fido_files/drivers.json \
     && cd /jacobitus/source/FidoModuleAbstract \
     && mvn clean install \
     && cd /jacobitus/source/Fido \
