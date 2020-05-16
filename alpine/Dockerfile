@@ -1,6 +1,6 @@
 FROM node:14.2.0-alpine3.11 as api-compiler
 
-LABEL maintainer="Carlos Remuzzi carlosremuzzi@gmail.com"
+ARG GITLAB_SHA=f93e3932
 
 RUN apk add --no-cache --virtual .build-deps \
         curl \
