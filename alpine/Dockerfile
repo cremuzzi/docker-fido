@@ -2,8 +2,19 @@ FROM node:14.2.0-alpine3.11 as api-compiler
 
 ARG GITLAB_SHA=f93e3932
 
-RUN apk add --no-cache --virtual .build-deps \
+RUN apk add --no-cache \
         curl \
+    && curl -fsL https://gitlab.softwarelibre.gob.bo/api/v4/projects/64/repository/archive.tar.gz\?sha\=$GITLAB_SHA -o jacobitus.tar.gz \
+    && tar -xf jacobitus.tar.gz \
+    && mv jacobitus-$GITLAB_SHA-* jacobitus \
+    && npm i -g apidoc \
+    && apidoc -i /jacobitus/source/Fido/src/main/java/gob/adsib/fido/server/end_points/ -o /jacobitus/source/Fido/apidoc/
+
+FROM openjdk:8-jdk-alpine3.9 as builder
+
+COPY --from=api-compiler /jacobitus /jacobitus
+
+RUN apk add --no-cache --virtual .build-deps \
         maven \
         nodejs \
         npm \
