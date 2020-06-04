@@ -12,7 +12,9 @@ RUN apk add --no-cache \
 
 FROM openjdk:8-jdk-alpine3.9 as builder
 
-COPY --from=api-compiler /jacobitus /jacobitus
+WORKDIR /jacobitus
+
+COPY --from=api-compiler /jacobitus ./
 
 RUN apk add --no-cache --virtual .build-deps \
         maven \
@@ -50,7 +52,12 @@ RUN apk add --no-cache \
         pcsc-lite \
         ttf-dejavu \
     && sed -i 's~jre\/bin\/java~/usr/bin/java~g' fido.properties \
-    && sed -i 's~opensc\.driver_enabled=false~opensc.driver_enabled=true~g' application.properties
+    && sed -i 's~opensc\.driver_enabled=false~opensc.driver_enabled=true~g' application.properties \
+    && adduser -u 1000 -D fido \
+    && mkdir -p /run/pcscd \
+    && chown -R fido:fido /run/pcscd
+
+USER fido
 
 ENTRYPOINT ["entrypoint"]
 
