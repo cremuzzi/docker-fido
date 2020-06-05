@@ -51,6 +51,7 @@ RUN apk add --no-cache \
         opensc \
         pcsc-lite \
         ttf-dejavu \
+        tzdata \
     && sed -i 's~jre\/bin\/java~/usr/bin/java~g' fido.properties \
     && sed -i 's~opensc\.driver_enabled=false~opensc.driver_enabled=true~g' application.properties \
     && adduser -u 1000 -D fido \
