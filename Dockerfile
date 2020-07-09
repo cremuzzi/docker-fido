@@ -4,10 +4,11 @@ ARG GITLAB_SHA=f93e3932
 
 RUN apk add --no-cache \
         curl \
+    && npm -g config set user root \
+    && npm -g install apidoc \
     && curl -fsL https://gitlab.softwarelibre.gob.bo/api/v4/projects/64/repository/archive.tar.gz\?sha\=$GITLAB_SHA -o jacobitus.tar.gz \
     && tar -xf jacobitus.tar.gz \
     && mv jacobitus-$GITLAB_SHA-* jacobitus \
-    && npm i -g apidoc \
     && apidoc -i /jacobitus/source/Fido/src/main/java/gob/adsib/fido/server/end_points/ -o /jacobitus/source/Fido/apidoc/
 
 FROM openjdk:8-jdk-alpine3.9 as builder
@@ -37,7 +38,7 @@ RUN apk add --no-cache --virtual .build-deps \
     && cp /jacobitus/source/FidoMonitor/target/monitor.jar monitor.jar \
     && cp -r /jacobitus/source/Fido/apidoc/ apidoc/
 
-FROM openjdk:8-jre-alpine3.9
+FROM alpine:3.12
 
 LABEL maintainer="Carlos Remuzzi carlosremuzzi@gmail.com"
 
@@ -49,6 +50,7 @@ WORKDIR /usr/lib/fido
 RUN apk add --no-cache \
         ccid \
         opensc \
+        openjdk8-jre \
         pcsc-lite \
         ttf-dejavu \
         tzdata \
